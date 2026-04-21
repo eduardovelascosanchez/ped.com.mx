@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PedCare | Pediatría de Vanguardia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #FAF7F2;
+      --warm-white: #FEFCF8;
+      --blush: #F2C4B0;
+      --coral: #E87A5D;
+      --terracotta: #C85A3E;
+      --sky: #A8D4E6;
+      --deep-sky: #4A9EC5;
+      --sage: #8FB89A;
+      --forest: #3D7A52;
+      --gold: #D4A843;
+      --ink: #1C1A17;
+      --muted: #6B6560;
+      --light-muted: #A8A39D;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* ─── NOISE TEXTURE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.4rem 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(250,247,242,0.88);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(200,90,62,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: var(--terracotta);
+      letter-spacing: -0.02em;
+      text-decoration: none;
+    }
+
+    .nav-logo span {
+      color: var(--deep-sky);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 1.5px;
+      background: var(--coral);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover { color: var(--terracotta); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .nav-cta {
+      background: var(--coral);
+      color: white !important;
+      padding: 0.6rem 1.4rem;
+      border-radius: 50px;
+      transition: background 0.2s, transform 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--terracotta) !important; transform: translateY(-1px); }
+    .nav-cta::after { display: none !important; }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 8rem 4rem 4rem;
+      position: relative;
+      overflow: hidden;
+      gap: 4rem;
+    }
+
+    .hero-bg-circle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.12;
+      pointer-events: none;
+    }
+
+    .hero-bg-circle:nth-child(1) {
+      width: 600px; height: 600px;
+      background: var(--blush);
+      top: -150px; right: -100px;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .hero-bg-circle:nth-child(2) {
+      width: 400px; height: 400px;
+      background: var(--sky);
+      bottom: -100px; left: 10%;
+      animation: float 10s ease-in-out infinite reverse;
+    }
+
+    .hero-bg-circle:nth-child(3) {
+      width: 200px; height: 200px;
+      background: var(--sage);
+      top: 30%; left: 40%;
+      animation: float 6s ease-in-out infinite;
+      opacity: 0.08;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-30px) rotate(5deg); }
+    }
+
+    .hero-content { position: relative; z-index: 2; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: white;
+      border: 1px solid var(--blush);
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--terracotta);
+      margin-bottom: 1.8rem;
+      animation: fadeInUp 0.6s ease both;
+    }
+
+    .hero-badge::before {
+      content: '✦';
+      font-size: 0.7rem;
+      color: var(--gold);
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 0.7s 0.1s ease both;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--coral);
+    }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+      animation: fadeInUp 0.7s 0.2s ease both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      animation: fadeInUp 0.7s 0.3s ease both;
+    }
+
+    .btn-primary {
+      background: var(--terracotta);
+      color: white;
+      padding: 0.95rem 2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.01em;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 24px rgba(200,90,62,0.3);
+    }
+
+    .btn-primary:hover {
+      background: var(--coral);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(200,90,62,0.4);
+    }
+
+    .btn-secondary {
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.2s;
+    }
+
+    .btn-secondary:hover { color: var(--coral); }
+
+    .btn-secondary::after {
+      content: '→';
+      transition: transform 0.2s;
+    }
+
+    .btn-secondary:hover::after { transform: translateX(4px); }
+
+    /* Hero Visual */
+    .hero-visual {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+      animation: fadeInRight 0.8s 0.2s ease both;
+    }
+
+    .hero-card-container {
+      position: relative;
+      width: 380px;
+      height: 480px;
+    }
+
+    .hero-main-card {
+      position: absolute;
+      top: 0; left: 0;
+      width: 340px;
+      background: white;
+      border-radius: 28px;
+      padding: 2rem;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+      z-index: 2;
+    }
+
+    .hero-card-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .doctor-avatar {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blush), var(--coral));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+    }
+
+    .doctor-info h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--ink);
+    }
+
+    .doctor-info p {
+      font-size: 0.8rem;
+      color: var(--light-muted);
+    }
+
+    .hero-card-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .stat-item {
+      background: var(--cream);
+      border-radius: 16px;
+      padding: 1rem;
+    }
+
+    .stat-item .num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--terracotta);
+      line-height: 1;
+    }
+
+    .stat-item .label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.3rem;
+    }
+
+    .hero-float-pill {
+      position: absolute;
+      background: white;
+      border-radius: 50px;
+      padding: 0.7rem 1.2rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.82rem;
+      font-weight: 500;
+      z-index: 3;
+    }
+
+    .pill-1 {
+      bottom: 80px; right: -10px;
+      color: var(--forest);
+      animation: floatPill 4s ease-in-out infinite;
+    }
+
+    .pill-2 {
+      top: 20px; right: 0;
+      color: var(--deep-sky);
+      animation: floatPill 5s 1s ease-in-out infinite;
+    }
+
+    .pill-icon {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+    }
+
+    .pill-1 .pill-icon { background: #E8F5EC; }
+    .pill-2 .pill-icon { background: #E3F4FB; }
+
+    @keyframes floatPill {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* ─── STATS STRIP ─── */
+    .stats-strip {
+      background: var(--terracotta);
+      padding: 2.5rem 4rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stats-strip::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 20px,
+        rgba(255,255,255,0.03) 20px,
+        rgba(255,255,255,0.03) 21px
+      );
+    }
+
+    .strip-stat {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .strip-stat .big {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: white;
+      line-height: 1;
+    }
+
+    .strip-stat .unit {
+      font-size: 1.2rem;
+      color: var(--blush);
+    }
+
+    .strip-stat .desc {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.7);
+      margin-top: 0.3rem;
+      letter-spacing: 0.03em;
+    }
+
+    /* ─── SERVICES ─── */
+    .section {
+      padding: 7rem 4rem;
+    }
+
+    .section-label {
+      font-size: 0.78rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--coral);
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      max-width: 600px;
+    }
+
+    .section-title em {
+      font-style: italic;
+      color: var(--coral);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 4rem;
+    }
+
+    .service-card {
+      background: white;
+      border-radius: 24px;
+      padding: 2rem;
+      border: 1px solid rgba(0,0,0,0.04);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.3s;
+      border-radius: 24px;
+    }
+
+    .service-card:nth-child(1)::before { background: linear-gradient(135deg, rgba(242,196,176,0.15), rgba(232,122,93,0.05)); }
+    .service-card:nth-child(2)::before { background: linear-gradient(135deg, rgba(168,212,230,0.15), rgba(74,158,197,0.05)); }
+    .service-card:nth-child(3)::before { background: linear-gradient(135deg, rgba(143,184,154,0.15), rgba(61,122,82,0.05)); }
+    .service-card:nth-child(4)::before { background: linear-gradient(135deg, rgba(212,168,67,0.15), rgba(212,168,67,0.05)); }
+    .service-card:nth-child(5)::before { background: linear-gradient(135deg, rgba(242,196,176,0.15), rgba(200,90,62,0.05)); }
+    .service-card:nth-child(6)::before { background: linear-gradient(135deg, rgba(168,212,230,0.15), rgba(74,158,197,0.05)); }
+
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.1);
+    }
+
+    .service-card:hover::before { opacity: 1; }
+
+    .service-icon {
+      width: 56px; height: 56px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.3rem;
+    }
+
+    .si-1 { background: linear-gradient(135deg, var(--blush), var(--coral)); }
+    .si-2 { background: linear-gradient(135deg, var(--sky), var(--deep-sky)); }
+    .si-3 { background: linear-gradient(135deg, #C5E8C5, var(--sage)); }
+    .si-4 { background: linear-gradient(135deg, #FAE8B0, var(--gold)); }
+    .si-5 { background: linear-gradient(135deg, var(--blush), var(--terracotta)); }
+    .si-6 { background: linear-gradient(135deg, var(--sky), #2A7EA5); }
+
+    .service-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--ink);
+      margin-bottom: 0.6rem;
+      letter-spacing: -0.01em;
+    }
+
+    .service-card p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .service-card .arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      color: var(--coral);
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-top: 1.2rem;
+      transition: gap 0.2s;
+    }
+
+    .service-card:hover .arrow { gap: 0.6rem; }
+
+    /* ─── ABOUT ─── */
+    .about-section {
+      background: var(--ink);
+      color: white;
+      padding: 7rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+
+    .about-label { color: var(--coral); }
+    .about-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-top: 0.8rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .about-title em {
+      font-style: italic;
+      color: var(--blush);
+    }
+
+    .about-text {
+      color: rgba(255,255,255,0.65);
+      line-height: 1.8;
+      font-size: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .about-features {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .about-feature {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: rgba(255,255,255,0.8);
+      font-size: 0.9rem;
+    }
+
+    .about-feature-icon {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .about-visual {
+      position: relative;
+    }
+
+    .about-big-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 9rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.04);
+      line-height: 1;
+      position: absolute;
+      top: -20px; right: 0;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .about-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .about-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 1.8rem;
+      transition: all 0.3s;
+    }
+
+    .about-card:hover {
+      background: rgba(255,255,255,0.09);
+      transform: translateY(-4px);
+    }
+
+    .about-card-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
+
+    .about-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .about-card p {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.55;
+    }
+
+    /* ─── TESTIMONIALS ─── */
+    .testimonials {
+      padding: 7rem 4rem;
+      background: var(--warm-white);
+    }
+
+    .testimonials-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 4rem;
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .testimonial-card {
+      background: white;
+      border-radius: 24px;
+      padding: 2rem;
+      border: 1px solid rgba(0,0,0,0.04);
+      transition: transform 0.3s;
+    }
+
+    .testimonial-card:hover { transform: translateY(-4px); }
+
+    .testimonial-card.featured {
+      background: var(--terracotta);
+      color: white;
+    }
+
+    .stars {
+      color: var(--gold);
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+    }
+
+    .testimonial-card.featured .stars { color: var(--blush); }
+
+    .testimonial-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      line-height: 1.65;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+
+    .testimonial-card.featured .testimonial-text { color: white; }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .author-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--blush);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .testimonial-card.featured .author-avatar { background: rgba(255,255,255,0.2); }
+
+    .author-name {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .testimonial-card.featured .author-name { color: white; }
+
+    .author-role {
+      font-size: 0.78rem;
+      color: var(--light-muted);
+    }
+
+    .testimonial-card.featured .author-role { color: rgba(255,255,255,0.65); }
+
+    /* ─── TEAM ─── */
+    .team-section {
+      padding: 7rem 4rem;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 4rem;
+    }
+
+    .team-card {
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .team-card:hover { transform: translateY(-6px); }
+
+    .team-avatar-wrap {
+      position: relative;
+      width: 130px;
+      height: 130px;
+      margin: 0 auto 1.2rem;
+    }
+
+    .team-avatar {
+      width: 130px; height: 130px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.8rem;
+      background: linear-gradient(135deg, var(--blush), var(--sky));
+    }
+
+    .team-badge {
+      position: absolute;
+      bottom: 4px; right: 4px;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--sage);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      border: 2px solid var(--cream);
+    }
+
+    .team-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      color: var(--ink);
+      margin-bottom: 0.3rem;
+    }
+
+    .team-card .specialty {
+      font-size: 0.82rem;
+      color: var(--coral);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+
+    .team-card p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ─── CONTACT / APPOINTMENT ─── */
+    .appointment-section {
+      background: linear-gradient(135deg, var(--sky) 0%, var(--deep-sky) 100%);
+      padding: 7rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .appointment-section::before {
+      content: '✦';
+      position: absolute;
+      font-size: 20rem;
+      color: rgba(255,255,255,0.04);
+      top: -50px; right: -50px;
+      line-height: 1;
+    }
+
+    .appt-label { color: rgba(255,255,255,0.7); }
+
+    .appt-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      color: white;
+      line-height: 1.15;
+      margin-top: 0.8rem;
+      margin-bottom: 1.2rem;
+      letter-spacing: -0.02em;
+    }
+
+    .appt-desc {
+      color: rgba(255,255,255,0.75);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+
+    .contact-chips {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .contact-chip {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      color: white;
+      font-size: 0.9rem;
+    }
+
+    .chip-icon {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+    }
+
+    /* Appointment Form */
+    .appt-form {
+      background: white;
+      border-radius: 28px;
+      padding: 2.5rem;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.15);
+    }
+
+    .form-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1.5px solid rgba(0,0,0,0.1);
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--ink);
+      background: var(--cream);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--coral);
+    }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .btn-form {
+      width: 100%;
+      background: var(--terracotta);
+      color: white;
+      padding: 1rem;
+      border: none;
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s;
+      margin-top: 0.5rem;
+    }
+
+    .btn-form:hover {
+      background: var(--coral);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 24px rgba(200,90,62,0.3);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: #111009;
+      color: rgba(255,255,255,0.55);
+      padding: 4rem 4rem 2rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      margin-bottom: 2rem;
+    }
+
+    .footer-brand-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: white;
+      margin-bottom: 0.8rem;
+    }
+
+    .footer-brand-name span { color: var(--coral); }
+
+    .footer-brand-desc {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .social-link {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .social-link:hover { background: var(--coral); }
+
+    .footer-col h5 {
+      color: white;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .footer-col ul li a {
+      text-decoration: none;
+      color: rgba(255,255,255,0.5);
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+
+    .footer-col ul li a:hover { color: var(--blush); }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+    }
+
+    .footer-bottom a {
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* ─── SCROLL ANIMATIONS ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 768px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 6rem 1.5rem 3rem; gap: 2rem; }
+      .hero-visual { display: none; }
+      .stats-strip { grid-template-columns: 1fr 1fr; padding: 2rem 1.5rem; }
+      .section { padding: 4rem 1.5rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .about-section { grid-template-columns: 1fr; padding: 4rem 1.5rem; gap: 2rem; }
+      .testimonials { padding: 4rem 1.5rem; }
+      .testimonials-header { flex-direction: column; gap: 1rem; align-items: flex-start; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .team-section { padding: 4rem 1.5rem; }
+      .team-grid { grid-template-columns: 1fr; }
+      .appointment-section { grid-template-columns: 1fr; padding: 4rem 1.5rem; gap: 3rem; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; padding: 2rem 1.5rem 2rem; }
+      footer { padding: 3rem 1.5rem 1.5rem; }
+      .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Ped<span>.com.mx</span></a>
+  <ul class="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#equipo">Equipo</a></li>
+    <li><a href="#testimonios">Testimonios</a></li>
+    <li><a href="#cita" class="nav-cta">Agendar Cita</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-circle"></div>
+  <div class="hero-bg-circle"></div>
+  <div class="hero-bg-circle"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">Pediatría de Vanguardia · Guadalajara</div>
+    <h1 class="hero-title">
+      Cuidamos cada<br>
+      <em>pequeño paso</em><br>
+      de tu hijo
+    </h1>
+    <p class="hero-desc">
+      Atención pediátrica especializada, con tecnología de punta y el más profundo compromiso humano. Porque cada niño merece lo mejor.
+    </p>
+    <div class="hero-actions">
+      <a href="#cita" class="btn-primary">Agendar consulta</a>
+      <a href="#servicios" class="btn-secondary">Ver servicios</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="hero-card-container">
+      <div class="hero-main-card">
+        <div class="hero-card-header">
+          <div class="doctor-avatar">👨‍⚕️</div>
+          <div class="doctor-info">
+            <h4>Dr. Eduardo Martínez</h4>
+            <p>Pediatra Neonatólogo · Cédula 8834521</p>
+          </div>
+        </div>
+        <div class="hero-card-stats">
+          <div class="stat-item">
+            <div class="num">15<span class="unit" style="font-size:1rem">+</span></div>
+            <div class="label">Años de experiencia</div>
+          </div>
+          <div class="stat-item">
+            <div class="num">98<span class="unit" style="font-size:1rem">%</span></div>
+            <div class="label">Satisfacción familiar</div>
+          </div>
+          <div class="stat-item">
+            <div class="num">4.9<span class="unit" style="font-size:1rem">★</span></div>
+            <div class="label">Calificación</div>
+          </div>
+          <div class="stat-item">
+            <div class="num">2k<span class="unit" style="font-size:0.9rem">+</span></div>
+            <div class="label">Pacientes atendidos</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-float-pill pill-1">
+        <div class="pill-icon">✅</div>
+        Vacunación al día
+      </div>
+
+      <div class="hero-float-pill pill-2">
+        <div class="pill-icon">💙</div>
+        Consulta hoy disponible
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS STRIP -->
+<div class="stats-strip">
+  <div class="strip-stat reveal">
+    <div class="big">15<span class="unit">+</span></div>
+    <div class="desc">Años de Experiencia</div>
+  </div>
+  <div class="strip-stat reveal">
+    <div class="big">2,400<span class="unit"></span></div>
+    <div class="desc">Familias Atendidas</div>
+  </div>
+  <div class="strip-stat reveal">
+    <div class="big">12<span class="unit"></span></div>
+    <div class="desc">Especialidades Pediátricas</div>
+  </div>
+  <div class="strip-stat reveal">
+    <div class="big">98<span class="unit">%</span></div>
+    <div class="desc">Índice de Satisfacción</div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="section" id="servicios">
+  <div class="section-label">Nuestros Servicios</div>
+  <h2 class="section-title">Todo lo que tu hijo<br>necesita en <em>un solo lugar</em></h2>
+  <div class="services-grid">
+
+    <div class="service-card reveal">
+      <div class="service-icon si-1">👶</div>
+      <h3>Neonatología</h3>
+      <p>Atención especializada para recién nacidos, prematuros y bebés con condiciones especiales. Cuidado intensivo neonatal de excelencia.</p>
+      <span class="arrow">Conocer más →</span>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="service-icon si-2">📋</div>
+      <h3>Consulta Pediátrica</h3>
+      <p>Seguimiento integral del crecimiento y desarrollo de tu hijo, desde el nacimiento hasta la adolescencia. Controles preventivos y curativos.</p>
+      <span class="arrow">Conocer más →</span>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="service-icon si-3">💉</div>
+      <h3>Vacunación</h3>
+      <p>Programa completo de vacunación según el esquema SEP/SSA y vacunas adicionales recomendadas. Control y registro electrónico.</p>
+      <span class="arrow">Conocer más →</span>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="service-icon si-4">🧠</div>
+      <h3>Neurodesarrollo</h3>
+      <p>Evaluación temprana de hitos del desarrollo neurológico. Detección oportuna de condiciones del espectro autista, TDAH y otras.</p>
+      <span class="arrow">Conocer más →</span>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="service-icon si-5">🫁</div>
+      <h3>Neumología Pediátrica</h3>
+      <p>Tratamiento de asma, bronquitis recurrente y enfermedades respiratorias crónicas en niños de todas las edades.</p>
+      <span class="arrow">Conocer más →</span>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="service-icon si-6">🍽️</div>
+      <h3>Nutrición Infantil</h3>
+      <p>Orientación nutricional personalizada, manejo de obesidad infantil, trastornos alimentarios y dietas especiales para niños.</p>
+      <span class="arrow">Conocer más →</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section" id="nosotros">
+  <div>
+    <div class="section-label about-label">Quiénes Somos</div>
+    <h2 class="about-title">Más de una década<br>cuidando <em>pequeñas vidas</em></h2>
+    <p class="about-text">
+      Somos un centro pediátrico de referencia en Guadalajara, comprometidos con brindar atención médica de la más alta calidad a niños y adolescentes. Nuestro equipo multidisciplinario combina la calidez humana con tecnología de vanguardia para acompañar a cada familia en cada etapa del desarrollo.
+    </p>
+    <div class="about-features">
+      <div class="about-feature">
+        <div class="about-feature-icon">🏥</div>
+        Clínica certificada por la Secretaría de Salud Jalisco
+      </div>
+      <div class="about-feature">
+        <div class="about-feature-icon">🎓</div>
+        Médicos certificados por el Consejo Mexicano de Pediatría
+      </div>
+      <div class="about-feature">
+        <div class="about-feature-icon">⏰</div>
+        Atención de urgencias pediátricas 24/7
+      </div>
+      <div class="about-feature">
+        <div class="about-feature-icon">📱</div>
+        Expediente clínico electrónico y telemedicina
+      </div>
+    </div>
+  </div>
+
+  <div class="about-visual">
+    <div class="about-big-num">15</div>
+    <div class="about-cards">
+      <div class="about-card">
+        <div class="about-card-icon">🔬</div>
+        <h4>Laboratorio</h4>
+        <p>Resultados en menos de 2 horas para toma de decisiones rápidas.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">🩺</div>
+        <h4>Urgencias</h4>
+        <p>Atención pediátrica de emergencia disponible todos los días.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">📱</div>
+        <h4>Telemedicina</h4>
+        <p>Consultas en línea para seguimiento y orientación médica.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">🌡️</div>
+        <h4>Diagnóstico</h4>
+        <p>Ultrasonido, espirometría y estudios especializados in situ.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonios">
+  <div class="testimonials-header">
+    <div>
+      <div class="section-label">Testimonios</div>
+      <h2 class="section-title" style="margin-top:0.5rem">Lo que dicen<br>las <em>familias</em></h2>
+    </div>
+    <a href="#" class="btn-secondary" style="color:var(--muted)">Ver todos los comentarios</a>
+  </div>
+
+  <div class="testimonials-grid">
+    <div class="testimonial-card featured reveal">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">"Llevamos 3 años siendo pacientes aquí. La atención es excepcional — los médicos son muy humanos, siempre explican todo con claridad y nunca nos hemos sentido apurados. Es el lugar más tranquilizador cuando uno va asustado con un bebé enfermo."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">👩</div>
+        <div>
+          <div class="author-name">Laura González</div>
+          <div class="author-role">Mamá de Sofía, 3 años</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">"El Dr. Martínez detectó a tiempo un problema de desarrollo en mi hijo. Gracias a su intervención oportuna, hoy avanza de forma increíble."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">👨</div>
+        <div>
+          <div class="author-name">Carlos Reyes</div>
+          <div class="author-role">Papá de Mateo, 5 años</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">"Servicio de primer nivel. Las instalaciones son modernas, limpias y acogedoras. El personal administrativo también es muy amable."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">👩</div>
+        <div>
+          <div class="author-name">Ana Villanueva</div>
+          <div class="author-role">Mamá de twins, 2 años</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team-section" id="equipo">
+  <div class="section-label">Nuestro Equipo</div>
+  <h2 class="section-title">Los mejores <em>especialistas</em><br>para tus hijos</h2>
+  <div class="team-grid">
+
+    <div class="team-card reveal">
+      <div class="team-avatar-wrap">
+        <div class="team-avatar">👨‍⚕️</div>
+        <div class="team-badge">⭐</div>
+      </div>
+      <h3>Dr. Eduardo Martínez</h3>
+      <div class="specialty">Neonatología</div>
+      <p>Especialista en recién nacidos y cuidados intensivos neonatales. Fellowship en Hospital Infantil de México.</p>
+    </div>
+
+    <div class="team-card reveal">
+      <div class="team-avatar-wrap">
+        <div class="team-avatar" style="background: linear-gradient(135deg,#C5E8C5,#8FB89A)">👩‍⚕️</div>
+        <div class="team-badge">⭐</div>
+      </div>
+      <h3>Dra. Valentina Cruz</h3>
+      <div class="specialty">Neurodesarrollo</div>
+      <p>Especialista en trastornos del neurodesarrollo infantil, autismo y TDAH. 10 años de experiencia clínica.</p>
+    </div>
+
+    <div class="team-card reveal">
+      <div class="team-avatar-wrap">
+        <div class="team-avatar" style="background: linear-gradient(135deg,#FAE8B0,#D4A843)">👨‍⚕️</div>
+        <div class="team-badge">⭐</div>
+      </div>
+      <h3>Dr. Roberto Ávila</h3>
+      <div class="specialty">Neumología Pediátrica</div>
+      <p>Especialista en enfermedades respiratorias crónicas y agudas. Certified Asthma Educator.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- APPOINTMENT -->
+<section class="appointment-section" id="cita">
+  <div>
+    <div class="section-label appt-label">Agenda tu Consulta</div>
+    <h2 class="appt-title">Tu hijo merece la<br>mejor atención, <em>hoy</em></h2>
+    <p class="appt-desc">Agenda una cita con nuestros especialistas de forma rápida y sencilla. También puedes contactarnos directamente.</p>
+    <div class="contact-chips">
+      <div class="contact-chip">
+        <div class="chip-icon">📞</div>
+        <span>+52 (33) 1234 5678</span>
+      </div>
+      <div class="contact-chip">
+        <div class="chip-icon">💬</div>
+        <span>WhatsApp: +52 (33) 9876 5432</span>
+      </div>
+      <div class="contact-chip">
+        <div class="chip-icon">📍</div>
+        <span>Av. Patria 123, Zapopan, Jalisco</span>
+      </div>
+      <div class="contact-chip">
+        <div class="chip-icon">⏰</div>
+        <span>Lun–Vie 8am–8pm · Sáb 9am–2pm</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="appt-form reveal">
+    <div class="form-title">Solicitar Cita</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nombre del padre/tutor</label>
+        <input type="text" placeholder="Tu nombre" />
+      </div>
+      <div class="form-group">
+        <label>Teléfono / WhatsApp</label>
+        <input type="tel" placeholder="+52 33..." />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nombre del paciente</label>
+        <input type="text" placeholder="Nombre del niño/a" />
+      </div>
+      <div class="form-group">
+        <label>Edad</label>
+        <input type="text" placeholder="Ej. 2 años 3 meses" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Especialidad requerida</label>
+      <select>
+        <option>Consulta pediátrica general</option>
+        <option>Neonatología</option>
+        <option>Neurodesarrollo</option>
+        <option>Neumología pediátrica</option>
+        <option>Nutrición infantil</option>
+        <option>Vacunación</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Fecha preferida</label>
+      <input type="date" />
+    </div>
+    <div class="form-group">
+      <label>Motivo de consulta (opcional)</label>
+      <textarea rows="2" placeholder="Describe brevemente el motivo..."></textarea>
+    </div>
+    <button class="btn-form" onclick="this.textContent='✓ Solicitud enviada'; this.style.background='#3D7A52'">
+      Solicitar Cita →
+    </button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand-name">Ped<span>.com.mx</span></div>
+      <p class="footer-brand-desc">Centro pediátrico de excelencia en Guadalajara, Jalisco. Cuidando la salud infantil con ciencia, tecnología y amor.</p>
+      <div class="social-links">
+        <a href="#" class="social-link">f</a>
+        <a href="#" class="social-link">ig</a>
+        <a href="#" class="social-link">yt</a>
+        <a href="#" class="social-link">wa</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Servicios</h5>
+      <ul>
+        <li><a href="#">Neonatología</a></li>
+        <li><a href="#">Consulta Pediátrica</a></li>
+        <li><a href="#">Vacunación</a></li>
+        <li><a href="#">Neurodesarrollo</a></li>
+        <li><a href="#">Neumología</a></li>
+        <li><a href="#">Nutrición Infantil</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Clínica</h5>
+      <ul>
+        <li><a href="#">Nuestro Equipo</a></li>
+        <li><a href="#">Instalaciones</a></li>
+        <li><a href="#">Certificaciones</a></li>
+        <li><a href="#">Blog de Salud</a></li>
+        <li><a href="#">Telemedicina</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contacto</h5>
+      <ul>
+        <li><a href="#">Agendar Cita</a></li>
+        <li><a href="#">Urgencias 24h</a></li>
+        <li><a href="#">WhatsApp</a></li>
+        <li><a href="#">Correo electrónico</a></li>
+        <li><a href="#">Ubicación</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Ped.com.mx · Todos los derechos reservados</span>
+    <div style="display:flex;gap:1.5rem">
+      <a href="#">Aviso de Privacidad</a>
+      <a href="#">Términos de Uso</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  reveals.forEach(el => observer.observe(el));
+
+  // Nav scroll effect
+  window.addEventListener('scroll', () => {
+    document.querySelector('nav').style.boxShadow =
+      window.scrollY > 20 ? '0 2px 24px rgba(0,0,0,0.07)' : 'none';
+  });
+
+  // Counter animation
+  function animateCount(el, target, suffix='') {
+    let start = 0;
+    const step = target / 60;
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= target) { el.textContent = target + suffix; clearInterval(timer); }
+      else el.textContent = Math.floor(start) + suffix;
+    }, 25);
+  }
+
+  const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const nums = entry.target.querySelectorAll('.big');
+        nums.forEach(n => {
+          const text = n.textContent;
+          const match = text.match(/(\d+)/);
+          if (match) {
+            const unit = n.querySelector('.unit');
+            const suffix = unit ? unit.textContent : '';
+            const unitHTML = unit ? unit.outerHTML : '';
+            animateCount(n, parseInt(match[1]), '');
+            setTimeout(() => {
+              n.innerHTML = n.textContent + unitHTML;
+            }, 1500);
+          }
+        });
+        statsObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  const strip = document.querySelector('.stats-strip');
+  if (strip) statsObserver.observe(strip);
+</script>
+</body>
+</html>
